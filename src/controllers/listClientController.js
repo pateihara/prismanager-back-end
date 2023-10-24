@@ -7,32 +7,25 @@ const getListClientAll = async (req, res) => {
     const listClients = await listClientSchema
       .find()
       .populate({
-        path: "client", // Campo a ser preenchido com os detalhes do cliente
-        model: "Client", // Nome do modelo do cliente
-        select: "name", // Campo do cliente que você deseja retornar (name)
+        path: "client",
+        model: "Client",
+        select: "name CPF", // Adicione todos os campos que deseja exibir
       })
       .populate({
-        path: "state", // Campo a ser preenchido com os detalhes do status
-        model: "Status", // Nome do modelo do status
-        select: "state", // Campo do status que você deseja retornar (state)
+        path: "state",
+        model: "Status",
+        select: "state color", // Adicione todos os campos que deseja exibir
       })
       .exec();
 
-    // Mapeie os resultados para formatá-los como desejado
+    // Mapeie os resultados
     const formattedListClients = listClients.map((listClient) => {
-      const clientName =
-        listClient.client && listClient.client.name
-          ? listClient.client.name
-          : "N/A";
-      const state =
-        listClient.state && listClient.state.state
-          ? listClient.state.state
-          : "N/A";
-
       return {
         _id: listClient._id,
-        clientName,
-        state,
+        clientName: listClient.client.name,
+        clientCPF: listClient.client.CPF,
+        state: listClient.state.state,
+        stateColor: listClient.state.color,
       };
     });
 

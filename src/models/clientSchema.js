@@ -1,14 +1,13 @@
 import mongoose from "mongoose";
 
 const clientSchema = new mongoose.Schema({
-  id: mongoose.Schema.Types.ObjectId,
   name: {
     type: String,
-    require: true,
+    required: true,
   },
   CPF: {
     type: String,
-    require: true,
+    required: true,
   },
   contacts: [
     {
@@ -23,4 +22,5 @@ const clientSchema = new mongoose.Schema({
     },
   ],
 });
+
 export default mongoose.model("Client", clientSchema);
