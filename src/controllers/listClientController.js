@@ -1,35 +1,24 @@
 import listClientSchema from "../models/listClientSchema.js";
 import client from "../models/clientSchema.js";
 
-// READ
+//READ
 const getListClientAll = async (req, res) => {
   try {
     const listClients = await listClientSchema
       .find()
       .populate({
-        path: "client",
-        model: "Client",
-        select: "name CPF", // Adicione todos os campos que deseja exibir
+        path: "client", // Campo a ser preenchido com os detalhes do cliente
+        model: "Client", // Nome do modelo do cliente
+        select: "name", // Campo do cliente que você deseja retornar (name)
       })
       .populate({
-        path: "state",
-        model: "Status",
-        select: "state color", // Adicione todos os campos que deseja exibir
+        path: "state", // Campo a ser preenchido com os detalhes do status
+        model: "Status", // Nome do modelo do status
+        select: "state", // Campo do status que você deseja retornar (state)
       })
       .exec();
 
-    // Mapeie os resultados
-    const formattedListClients = listClients.map((listClient) => {
-      return {
-        _id: listClient._id,
-        clientName: listClient.client.name,
-        clientCPF: listClient.client.CPF,
-        state: listClient.state.state,
-        stateColor: listClient.state.color,
-      };
-    });
-
-    res.status(200).json(formattedListClients);
+    res.status(200).json(listClients);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -54,9 +43,9 @@ const createListClient = async (req, res) => {
       message: "List Client Created",
       statusCode: 201,
       data: {
-        clientName: req.body.clientName, // Use diretamente o nome do cliente do corpo da solicitação
-        state: req.body.state,
+        client: req.body.clientName, // Use diretamente o nome do cliente do corpo da solicitação
         _id: savedListClient._id, // Manter o ID do listClientSchema
+        __v: savedListClient.__v, // Incluir o __v, se necessário
       },
     });
   } catch (error) {
