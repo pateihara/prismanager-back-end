@@ -1,7 +1,7 @@
 import listClientSchema from "../models/listClientSchema.js";
 import client from "../models/clientSchema.js";
 
-// READ
+//READ
 const getListClientAll = async (req, res) => {
   try {
     const listClients = await listClientSchema
@@ -18,16 +18,7 @@ const getListClientAll = async (req, res) => {
       })
       .exec();
 
-    // Mapeie os resultados para formatá-los como desejado
-    const formattedListClients = listClients.map((listClient) => {
-      return {
-        _id: listClient._id,
-        clientName: listClient.client.name,
-        state: listClient.state.state,
-      };
-    });
-
-    res.status(200).json(formattedListClients);
+    res.status(200).json(listClients);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -52,9 +43,9 @@ const createListClient = async (req, res) => {
       message: "List Client Created",
       statusCode: 201,
       data: {
-        clientName: req.body.clientName, // Use diretamente o nome do cliente do corpo da solicitação
-        state: req.body.state,
+        client: req.body.clientName, // Use diretamente o nome do cliente do corpo da solicitação
         _id: savedListClient._id, // Manter o ID do listClientSchema
+        __v: savedListClient.__v, // Incluir o __v, se necessário
       },
     });
   } catch (error) {
