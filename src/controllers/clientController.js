@@ -30,16 +30,23 @@ const getClientAll = async (req, res) => {
 
 const createClient = async (req, res) => {
   try {
-    // Crie o cliente como você fez anteriormente
+    // Adicione um log para verificar os dados recebidos na solicitação
+    console.log("Dados da solicitação:", req.body);
+
+    // Primeiro, crie o cliente como você fez anteriormente
     const newClient = new Client({
       name: req.body.name,
       CPF: req.body.CPF,
     });
 
-    // Crie os contatos e associe-os ao cliente
+    // Adicione um log para verificar o novo cliente antes de salvá-lo
+    console.log("Novo cliente a ser salvo:", newClient);
+
+    const savedClient = await newClient.save();
+
+    // Agora, crie os contatos e associe-os ao cliente
     const contactIds = [];
     for (const contactData of req.body.contacts) {
-      // Crie o endereço para o contato
       const newAddress = new Address({
         state: contactData.address.state,
         city: contactData.address.city,
@@ -49,30 +56,48 @@ const createClient = async (req, res) => {
         complement: contactData.address.complement,
       });
 
+      // Adicione um log para verificar o novo endereço antes de salvá-lo
+      console.log("Novo endereço a ser salvo:", newAddress);
+
       const savedAddress = await newAddress.save();
 
-      // Crie o contato e associe-o ao endereço
       const newContact = new Contact({
         email: contactData.email,
         telephone: contactData.telephone,
         address: savedAddress._id,
       });
 
+      // Adicione um log para verificar o novo contato antes de salvá-lo
+      console.log("Novo contato a ser salvo:", newContact);
+
       const savedContact = await newContact.save();
       contactIds.push(savedContact._id);
     }
 
+    // Adicione um log para verificar os IDs dos contatos antes de associá-los ao cliente
+    console.log("IDs dos contatos a serem associados ao cliente:", contactIds);
+
     // Associe os IDs dos contatos ao cliente
-    newClient.contacts = contactIds;
+    savedClient.contacts = contactIds;
+    await savedClient.save();
 
-    // Salve o cliente
-    const savedClient = await newClient.save();
+    // Use populate para obter os detalhes completos dos contatos
+    const clientePopulado = await Client.populate(savedClient, "contacts");
+    const addressPopulate = await Address.populate(
+      savedClient,
+      "contacts.address"
+    );
 
-    // Retorne a resposta com os detalhes do cliente
+    // Adicione logs para verificar os resultados finais
+    console.log("Cliente salvo:", savedClient);
+    console.log("Cliente com contatos populados:", clientePopulado);
+    console.log("Endereço populado:", addressPopulate);
+
     res.status(201).send({
       message: "Client Created",
       statusCode: 201,
-      data: savedClient, // Inclua outros dados relevantes se necessário
+      data: clientePopulado,
+      addressData: addressPopulate,
     });
   } catch (error) {
     console.error(error);
