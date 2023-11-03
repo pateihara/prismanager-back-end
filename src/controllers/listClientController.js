@@ -26,7 +26,7 @@ const getListClientAll = async (req, res) => {
 const createListClient = async (req, res) => {
   try {
     // Criar o nome e ID do cliente
-    const newClient = new Client({
+    const newClient = new client({
       name: req.body.name, // Use o nome do corpo da solicitação
       CPF: req.body.CPF, // Use o CPF do corpo da solicitação
     });
