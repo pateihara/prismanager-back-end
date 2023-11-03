@@ -25,11 +25,10 @@ const getListClientAll = async (req, res) => {
 
 const createListClient = async (req, res) => {
   try {
-    // Crie o ListClient com os campos name, CPF e state
     const newListClient = new listClientSchema({
       name: req.body.name,
       CPF: req.body.CPF,
-      state: req.body.status, // Certifique-se de usar o campo correto do corpo da requisição
+      state: req.body.status,
     });
 
     const savedListClient = await newListClient.save();
