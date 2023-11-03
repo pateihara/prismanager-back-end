@@ -5,6 +5,13 @@ const listClientSchema = new mongoose.Schema({
   client: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Client",
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  CPF: {
+    type: String,
     required: true,
   },
   state: {

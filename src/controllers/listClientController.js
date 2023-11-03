@@ -34,11 +34,9 @@ const createListClient = async (req, res) => {
 
     // Agora, crie o ListClient e associe-o ao cliente
     const newListClient = new listClientSchema({
-      client: {
-        id: savedClient._id,
-        name: savedClient.name,
-        CPF: savedClient.CPF,
-      },
+      client: savedClient._id, // Use o _id do cliente
+      name: req.body.name,
+      CPF: req.body.CPF,
       state: req.body.state,
     });
 
