@@ -26,34 +26,32 @@ const getListClientAll = async (req, res) => {
 
 const createListClient = async (req, res) => {
   try {
-    // Criar o nome e ID do cliente
-    const newClient = new client({
+    // Criar um novo Client
+    const newClient = new Client({
       name: req.body.clientName,
-      CPF: req.body.CPF, // Certifique-se de incluir o CPF também
+      CPF: req.body.clientCPF,
+      // Outros campos do Client, se aplicável
     });
     const savedClient = await newClient.save();
 
-    // Agora, crie o listclient e associe-o ao cliente
-    const newListClient = new listClientSchema({
-      client: savedClient._id, // Associa o ID do cliente ao campo 'client' do listClientSchema
+    // Criar um novo ListClient e associá-lo ao Client
+    const newListClient = new ListClient({
+      client: savedClient._id,
       state: req.body.state,
+      // Outros campos específicos do ListClient
     });
     const savedListClient = await newListClient.save();
 
     res.status(201).send({
       message: "List Client Created",
-      statusCode: 201,
       data: {
-        client: req.body.clientName, // Use diretamente o nome do cliente do corpo da solicitação
-        _id: savedListClient._id, // Manter o ID do listClientSchema
-        __v: savedListClient.__v, // Incluir o __v, se necessário
+        client: savedClient,
+        listClient: savedListClient,
       },
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).send({
-      message: error.message,
-    });
+    console.error(error);
+    res.status(500).send({ message: error.message });
   }
 };
 
