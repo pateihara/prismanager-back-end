@@ -4,11 +4,12 @@ const listClientSchema = new mongoose.Schema({
   id: mongoose.Schema.Types.ObjectId,
   client: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Client", // Referência ao modelo Client
+    ref: "Client",
+    required: true,
   },
   state: {
-    type: mongoose.Schema.Types.ObjectId,
     ref: "Status",
+    required: true,
   },
 });
 
