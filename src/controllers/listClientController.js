@@ -9,12 +9,12 @@ const getListClientAll = async (req, res) => {
       .populate({
         path: "client", // Campo a ser preenchido com os detalhes do cliente
         model: "Client", // Nome do modelo do cliente
-        select: "name", // Campo do cliente que você deseja retornar (name)
+        select: "name CPF", // Selecionar os campos name e CPF do cliente
       })
       .populate({
         path: "state", // Campo a ser preenchido com os detalhes do status
         model: "Status", // Nome do modelo do status
-        select: "state", // Campo do status que você deseja retornar (state)
+        select: "state", // Selecionar o campo state do status
       })
       .exec();
 
