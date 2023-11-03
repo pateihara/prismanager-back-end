@@ -65,18 +65,18 @@ const createClient = async (req, res) => {
     savedClient.contacts = contactIds;
     await savedClient.save();
 
-    // Agora, você pode usar populate para obter os detalhes completos dos contatos e endereços
-    const clientePopulado = await Client.populate(savedClient, {
-      path: "contacts",
-      populate: {
-        path: "address",
-      },
-    });
+    // Use populate para obter os detalhes completos dos contatos
+    const clientePopulado = await Client.populate(savedClient, "contacts");
+    const addressPopulate = await Address.populate(
+      savedClient,
+      "contacts.address"
+    );
 
     res.status(201).send({
       message: "Client Created",
       statusCode: 201,
       data: clientePopulado,
+      addressData: addressPopulate,
     });
   } catch (error) {
     console.error(error);

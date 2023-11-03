@@ -7,13 +7,14 @@ const getListClientAll = async (req, res) => {
     const listClients = await listClientSchema
       .find()
       .populate({
-        path: "client",
-        select: "name CPF", // Inclua os campos "name" e "CPF" que você deseja preencher
+        path: "client", // Campo a ser preenchido com os detalhes do cliente
+        model: "Client", // Nome do modelo do cliente
+        select: "name", // Campo do cliente que você deseja retornar (name)
       })
       .populate({
-        path: "state",
-        model: "Status",
-        select: "state",
+        path: "state", // Campo a ser preenchido com os detalhes do status
+        model: "Status", // Nome do modelo do status
+        select: "state", // Campo do status que você deseja retornar (state)
       })
       .exec();
 
@@ -25,20 +26,26 @@ const getListClientAll = async (req, res) => {
 
 const createListClient = async (req, res) => {
   try {
-    const newListClient = new listClientSchema({
-      name: req.body.name,
-      CPF: req.body.CPF,
-      state: req.body.status,
+    // Criar o nome e ID do cliente
+    const newClient = new client({
+      name: req.body.clientName,
+      state: req.body.state,
     });
+    const savedClient = await newClient.save();
 
+    const newListClient = new listClientSchema({
+      client: savedClient._id, // Associa o ID do cliente ao campo 'client' do listClientSchema
+      state: req.body.state,
+    });
     const savedListClient = await newListClient.save();
 
     res.status(201).send({
       message: "List Client Created",
       statusCode: 201,
       data: {
-        _id: savedListClient._id,
-        __v: savedListClient.__v,
+        client: req.body.clientName, // Use diretamente o nome do cliente do corpo da solicitação
+        _id: savedListClient._id, // Manter o ID do listClientSchema
+        __v: savedListClient.__v, // Incluir o __v, se necessário
       },
     });
   } catch (error) {
