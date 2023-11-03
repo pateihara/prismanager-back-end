@@ -15,8 +15,8 @@ const listClientSchema = new mongoose.Schema({
     required: true,
   },
   state: {
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Status",
-    required: true,
   },
 });
 
