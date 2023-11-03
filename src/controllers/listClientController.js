@@ -4,23 +4,29 @@ import client from "../models/clientSchema.js";
 //READ
 const getListClientAll = async (req, res) => {
   try {
-    const listClients = await listClientSchema
-      .find()
-      .populate({
-        path: "client", // Campo a ser preenchido com os detalhes do cliente
-        model: "Client", // Nome do modelo do cliente
-        select: "name", // Campo do cliente que você deseja retornar (name)
-      })
-      .populate({
-        path: "state", // Campo a ser preenchido com os detalhes do status
-        model: "Status", // Nome do modelo do status
-        select: "state", // Campo do status que você deseja retornar (state)
-      })
-      .exec();
+    const { name, CPF, statusId } = req.body; // Certifique-se de que o corpo da solicitação contenha esses campos
 
-    res.status(200).json(listClients);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    // Primeiro, crie um novo documento ListClient
+    const newListClient = new ListClient({ name, CPF, status: statusId });
+
+    // Em seguida, crie um novo documento Client associado ao ListClient
+    const newClient = new Client({ listClient: newListClient._id });
+
+    // Salve o documento ListClient no banco de dados
+    await newListClient.save();
+
+    // Salve o documento Client no banco de dados
+    await newClient.save();
+
+    // Envie uma resposta de sucesso
+    return res
+      .status(201)
+      .json({ success: true, message: "ListClient criado com sucesso" });
+  } catch (error) {
+    console.error("Erro ao criar ListClient:", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Erro ao criar ListClient" });
   }
 };
 

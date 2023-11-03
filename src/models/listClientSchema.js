@@ -2,6 +2,14 @@ import mongoose from "mongoose";
 
 const listClientSchema = new mongoose.Schema({
   id: mongoose.Schema.Types.ObjectId,
+  name: {
+    type: String,
+    require: true,
+  },
+  CPF: {
+    type: String,
+    require: true,
+  },
   client: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Client", // Referência ao modelo Client
