@@ -1,7 +1,7 @@
 const clientSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true, // Correção: deve ser "required", não "require"
+    required: true,
   },
   CPF: {
     type: String,
