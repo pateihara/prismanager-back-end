@@ -26,10 +26,9 @@ const getListClientAll = async (req, res) => {
 
 const createListClient = async (req, res) => {
   try {
-    // Primeiro, crie um novo "Client" com "Name" e "CPF".
-    const newClient = new Client({
-      name: req.body.name, // Use o campo correto do nome (verifique se corresponde ao que você está passando)
-      CPF: req.body.CPF, // Use o campo correto do CPF
+    const newClient = new client({
+      name: req.body.name,
+      CPF: req.body.CPF,
     });
 
     const savedClient = await newClient.save();
