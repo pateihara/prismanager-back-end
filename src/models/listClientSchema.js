@@ -4,11 +4,11 @@ const listClientSchema = new mongoose.Schema({
   id: mongoose.Schema.Types.ObjectId,
   name: {
     type: String,
-    require: true,
+    required: true,
   },
   CPF: {
     type: String,
-    require: true,
+    required: true,
   },
   client: {
     type: mongoose.Schema.Types.ObjectId,
