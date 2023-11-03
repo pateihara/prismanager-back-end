@@ -39,11 +39,25 @@ const createClient = async (req, res) => {
     // Crie os contatos e associe-os ao cliente
     const contactIds = [];
     for (const contactData of req.body.contacts) {
+      // Crie o endereço para o contato
+      const newAddress = new Address({
+        state: contactData.address.state,
+        city: contactData.address.city,
+        neighborhood: contactData.address.neighborhood,
+        street: contactData.address.street,
+        number: contactData.address.number,
+        complement: contactData.address.complement,
+      });
+
+      const savedAddress = await newAddress.save();
+
+      // Crie o contato e associe-o ao endereço
       const newContact = new Contact({
         email: contactData.email,
         telephone: contactData.telephone,
-        address: /* Crie o endereço aqui */,
+        address: savedAddress._id,
       });
+
       const savedContact = await newContact.save();
       contactIds.push(savedContact._id);
     }
@@ -67,7 +81,6 @@ const createClient = async (req, res) => {
     });
   }
 };
-
 
 // UPDATED
 const updateClientById = async (req, res) => {
