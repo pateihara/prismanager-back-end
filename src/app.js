@@ -15,7 +15,7 @@ import routes from "./routes/userRoutes.js";
 app.use("/users", routes);
 
 import clientRoute from "./routes/clientRoutes.js";
-app.use("/clients", clientRoute);
+app.use("/listClients/clients", clientRoute);
 
 import routes3 from "./routes/authRoutes.js";
 app.use("/auth", routes3);

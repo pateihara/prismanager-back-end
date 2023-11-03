@@ -28,7 +28,7 @@ const createListClient = async (req, res) => {
   try {
     // Criar o nome e ID do cliente
     const newClient = new client({
-      name: req.body.clientName,
+      name: req.body.name,
       CPF: req.body.CPF, // Certifique-se de incluir o CPF também
     });
     const savedClient = await newClient.save();
@@ -44,7 +44,8 @@ const createListClient = async (req, res) => {
       message: "List Client Created",
       statusCode: 201,
       data: {
-        client: req.body.clientName, // Use diretamente o nome do cliente do corpo da solicitação
+        client: req.body.name, // Use diretamente o nome do cliente do corpo da solicitação
+        client: req.body.CPF, // Use diretamente o nome do cliente do corpo da solicitação
         _id: savedListClient._id, // Manter o ID do listClientSchema
         __v: savedListClient.__v, // Incluir o __v, se necessário
       },
