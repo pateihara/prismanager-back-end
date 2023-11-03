@@ -36,11 +36,7 @@ const createClient = async (req, res) => {
       CPF: req.body.CPF,
     });
     const savedClient = await newClient.save();
-    const newListClient = new listClientSchema({
-      client: savedClient._id, // Associa o ID do cliente ao campo 'client' do listClientSchema
-      state: req.body.state,
-    });
-    const savedListClient = await newListClient.save();
+
     // Agora, crie os contatos e associe-os ao cliente
     const contactIds = [];
     for (const contactData of req.body.contacts) {
