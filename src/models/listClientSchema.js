@@ -2,21 +2,13 @@ import mongoose from "mongoose";
 
 const listClientSchema = new mongoose.Schema({
   id: mongoose.Schema.Types.ObjectId,
-  client: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Client",
-  },
   name: {
     type: String,
-    required: function () {
-      return this.client ? false : true; // Permite name quando não há cliente associado
-    },
+    required: true,
   },
   CPF: {
     type: String,
-    required: function () {
-      return this.client ? false : true; // Permite CPF quando não há cliente associado
-    },
+    required: true,
   },
   state: {
     type: mongoose.Schema.Types.ObjectId,
