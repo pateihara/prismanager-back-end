@@ -4,17 +4,15 @@ import client from "../models/clientSchema.js";
 //READ
 const getListClientAll = async (req, res) => {
   try {
-    const listClients = await listClientSchema
-      .find()
+    const listClients = await ListClient.find()
       .populate({
-        path: "client", // Campo a ser preenchido com os detalhes do cliente
-        model: "Client", // Nome do modelo do cliente
-        select: "name", // Campo do cliente que você deseja retornar (name)
+        path: "client",
+        select: "name CPF", // Inclua os campos "name" e "CPF" que você deseja preencher
       })
       .populate({
-        path: "state", // Campo a ser preenchido com os detalhes do status
-        model: "Status", // Nome do modelo do status
-        select: "state", // Campo do status que você deseja retornar (state)
+        path: "state",
+        model: "Status",
+        select: "state",
       })
       .exec();
 
