@@ -4,6 +4,9 @@ import client from "../models/clientSchema.js";
 //READ
 const getListClientAll = async (req, res) => {
   try {
+    // Adicione o log antes de realizar a consulta no banco de dados
+    console.log("Before population - listClients:", listClients);
+
     const listClients = await listClientSchema
       .find()
       .populate({
@@ -17,6 +20,9 @@ const getListClientAll = async (req, res) => {
         select: "state", // Selecionar o campo state do status
       })
       .exec();
+
+    // Adicione outro log após a população dos dados
+    console.log("After population - listClients:", listClients);
 
     res.status(200).json(listClients);
   } catch (err) {
