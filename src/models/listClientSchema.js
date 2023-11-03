@@ -8,15 +8,20 @@ const listClientSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    required: true,
+    required: function () {
+      return this.client ? false : true; // Permite name quando não há cliente associado
+    },
   },
   CPF: {
     type: String,
-    required: true,
+    required: function () {
+      return this.client ? false : true; // Permite CPF quando não há cliente associado
+    },
   },
   state: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Status",
+    required: true,
   },
 });
 
