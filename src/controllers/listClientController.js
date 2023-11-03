@@ -29,10 +29,11 @@ const createListClient = async (req, res) => {
     // Criar o nome e ID do cliente
     const newClient = new client({
       name: req.body.clientName,
-      state: req.body.state,
+      CPF: req.body.CPF, // Certifique-se de incluir o CPF também
     });
     const savedClient = await newClient.save();
 
+    // Agora, crie o listclient e associe-o ao cliente
     const newListClient = new listClientSchema({
       client: savedClient._id, // Associa o ID do cliente ao campo 'client' do listClientSchema
       state: req.body.state,
