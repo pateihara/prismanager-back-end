@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 
 const clientSchema = new mongoose.Schema({
   id: mongoose.Schema.Types.ObjectId,
-
   contacts: [
     {
       type: mongoose.Schema.Types.ObjectId,

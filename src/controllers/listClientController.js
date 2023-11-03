@@ -4,7 +4,8 @@ import client from "../models/clientSchema.js";
 //READ
 const getListClientAll = async (req, res) => {
   try {
-    const listClients = await ListClient.find()
+    const listClients = await listClientSchema
+      .find()
       .populate({
         path: "client",
         select: "name CPF", // Inclua os campos "name" e "CPF" que você deseja preencher
