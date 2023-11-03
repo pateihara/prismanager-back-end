@@ -30,53 +30,35 @@ const getClientAll = async (req, res) => {
 
 const createClient = async (req, res) => {
   try {
-    // Primeiro, crie o cliente como você fez anteriormente
+    // Crie o cliente como você fez anteriormente
     const newClient = new Client({
       name: req.body.name,
       CPF: req.body.CPF,
     });
-    const savedClient = await newClient.save();
 
-    // Agora, crie os contatos e associe-os ao cliente
+    // Crie os contatos e associe-os ao cliente
     const contactIds = [];
     for (const contactData of req.body.contacts) {
-      const newAddress = new Address({
-        state: contactData.address.state,
-        city: contactData.address.city,
-        neighborhood: contactData.address.neighborhood,
-        street: contactData.address.street,
-        number: contactData.address.number,
-        complement: contactData.address.complement,
-      });
-
-      const savedAddress = await newAddress.save();
-
       const newContact = new Contact({
         email: contactData.email,
         telephone: contactData.telephone,
-        address: savedAddress._id,
+        address: /* Crie o endereço aqui */,
       });
-
       const savedContact = await newContact.save();
       contactIds.push(savedContact._id);
     }
 
     // Associe os IDs dos contatos ao cliente
-    savedClient.contacts = contactIds;
-    await savedClient.save();
+    newClient.contacts = contactIds;
 
-    // Use populate para obter os detalhes completos dos contatos
-    const clientePopulado = await Client.populate(savedClient, "contacts");
-    const addressPopulate = await Address.populate(
-      savedClient,
-      "contacts.address"
-    );
+    // Salve o cliente
+    const savedClient = await newClient.save();
 
+    // Retorne a resposta com os detalhes do cliente
     res.status(201).send({
       message: "Client Created",
       statusCode: 201,
-      data: clientePopulado,
-      addressData: addressPopulate,
+      data: savedClient, // Inclua outros dados relevantes se necessário
     });
   } catch (error) {
     console.error(error);
@@ -85,6 +67,7 @@ const createClient = async (req, res) => {
     });
   }
 };
+
 
 // UPDATED
 const updateClientById = async (req, res) => {
