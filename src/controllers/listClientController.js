@@ -45,7 +45,6 @@ const createListClient = async (req, res) => {
       statusCode: 201,
       data: {
         client: req.body.clientName,
-        client: req.body.cpf,
         _id: savedListClient._id,
         __v: savedListClient.__v,
       },
