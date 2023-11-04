@@ -32,6 +32,13 @@ const createListClient = async (req, res) => {
       name: req.body.clientName,
       cpf: req.body.cpf,
     });
+    newClient.save((err) => {
+      if (err) {
+        console.error(err);
+      } else {
+        console.log("Cliente salvo com sucesso");
+      }
+    });
     const savedClient = await newClient.save();
 
     const newListClient = new listClientSchema({
