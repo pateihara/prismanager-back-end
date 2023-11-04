@@ -2,6 +2,22 @@ import listClientSchema from "../models/listClientSchema.js";
 import client from "../models/clientSchema.js";
 
 //READ
+
+function maskLast3DigitsOfCPF(cpf) {
+  // Remove caracteres não numéricos do CPF
+  cpf = cpf.replace(/\D/g, "");
+
+  // Mantém apenas os 3 últimos dígitos e aplica a máscara "###.###.###-##"
+  cpf = cpf.slice(-3).replace(/(\d{3})(\d{3})(\d{3})/, "$1.$2.$3-");
+
+  return cpf;
+}
+
+// Exemplo de uso
+const cpf = "123.456.789-09"; // Substitua pelo CPF real
+const maskedCPF = maskLast3DigitsOfCPF(cpf);
+console.log(maskedCPF); // Deve imprimir "789.09"
+
 const getListClientAll = async (req, res) => {
   try {
     const listClients = await listClientSchema
@@ -29,7 +45,7 @@ const createListClient = async (req, res) => {
     // Criar o nome e ID do cliente
     const newClient = new client({
       name: req.body.clientName,
-      CPF: req.body.CPF,
+      CPF: maskLast3DigitsOfCPF(req.body.CPF), // Aplicar a máscara
       state: req.body.state,
     });
     const savedClient = await newClient.save();
@@ -45,6 +61,7 @@ const createListClient = async (req, res) => {
       statusCode: 201,
       data: {
         client: req.body.clientName, // Use diretamente o nome do cliente do corpo da solicitação
+        CPF: maskLast3DigitsOfCPF(req.body.CPF), // Aplicar a máscara
         _id: savedListClient._id, // Manter o ID do listClientSchema
         __v: savedListClient.__v, // Incluir o __v, se necessário
       },
