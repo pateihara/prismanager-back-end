@@ -48,6 +48,7 @@ const createListClient = async (req, res) => {
       CPF: maskLast3DigitsOfCPF(req.body.CPF), // Aplicar a máscara
       state: req.body.state,
     });
+    console.log("CPF mascarado:", newClient.CPF); // Adicione esta linha para depurar
     const savedClient = await newClient.save();
 
     const newListClient = new listClientSchema({
