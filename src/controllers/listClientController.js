@@ -10,7 +10,7 @@ const getListClientAll = async (req, res) => {
       .populate({
         path: "client",
         model: "Client",
-        select: "name CPF",
+        select: "name cpf",
       })
       .populate({
         path: "state", // Campo a ser preenchido com os detalhes do status
@@ -30,8 +30,7 @@ const createListClient = async (req, res) => {
     // Criar o nome e ID do cliente
     const newClient = new client({
       name: req.body.clientName,
-      CPF: req.body.CPF, // Aplicar a máscara
-      state: req.body.state,
+      cpf: req.body.cpf, // Aplicar a máscara
     });
     const savedClient = await newClient.save();
 
@@ -46,7 +45,7 @@ const createListClient = async (req, res) => {
       statusCode: 201,
       data: {
         client: req.body.clientName, // Use diretamente o nome do cliente do corpo da solicitação
-        CPF: req.body.CPF, // Aplicar a máscara
+        CPF: req.body.cpf, // Aplicar a máscara
         _id: savedListClient._id, // Manter o ID do listClientSchema
         __v: savedListClient.__v, // Incluir o __v, se necessário
       },
