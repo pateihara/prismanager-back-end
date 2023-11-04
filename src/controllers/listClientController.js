@@ -7,9 +7,9 @@ const getListClientAll = async (req, res) => {
     const listClients = await listClientSchema
       .find()
       .populate({
-        path: "client", // Campo a ser preenchido com os detalhes do cliente
-        model: "Client", // Nome do modelo do cliente
-        select: "name", // Campo do cliente que você deseja retornar (name)
+        path: "client",
+        model: "Client",
+        select: "name CPF",
       })
       .populate({
         path: "state", // Campo a ser preenchido com os detalhes do status
@@ -29,6 +29,7 @@ const createListClient = async (req, res) => {
     // Criar o nome e ID do cliente
     const newClient = new client({
       name: req.body.clientName,
+      CPF: req.body.CPF,
       state: req.body.state,
     });
     const savedClient = await newClient.save();
