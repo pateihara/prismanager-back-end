@@ -8,6 +8,7 @@ const getClientAll = async (req, res) => {
   try {
     const listClients = await ListClient.find().populate({
       path: "client",
+      select: "name CPF",
       populate: {
         path: "contacts",
         select: "email telephone address",
