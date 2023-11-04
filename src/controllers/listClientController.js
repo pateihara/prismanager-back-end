@@ -36,7 +36,6 @@ const createListClient = async (req, res) => {
 
     const newListClient = new listClientSchema({
       client: savedClient._id, // Associa o ID do cliente ao campo 'client' do listClientSchema
-      cpf: req.body.cpf,
       state: req.body.state,
     });
     const savedListClient = await newListClient.save();
@@ -46,7 +45,7 @@ const createListClient = async (req, res) => {
       statusCode: 201,
       data: {
         client: req.body.clientName,
-        cpf: req.body.cpf,
+        client: req.body.cpf,
         _id: savedListClient._id,
         __v: savedListClient.__v,
       },
