@@ -30,7 +30,7 @@ const createListClient = async (req, res) => {
     // Criar o nome e ID do cliente
     const newClient = new client({
       name: req.body.clientName,
-      cpf: req.body.cpf, // Aplicar a máscara
+      cpf: req.body.cpf,
     });
     const savedClient = await newClient.save();
 
@@ -44,10 +44,10 @@ const createListClient = async (req, res) => {
       message: "List Client Created",
       statusCode: 201,
       data: {
-        client: req.body.clientName, // Use diretamente o nome do cliente do corpo da solicitação
-        CPF: req.body.cpf, // Aplicar a máscara
-        _id: savedListClient._id, // Manter o ID do listClientSchema
-        __v: savedListClient.__v, // Incluir o __v, se necessário
+        client: req.body.clientName,
+        CPF: req.body.cpf,
+        _id: savedListClient._id,
+        __v: savedListClient.__v,
       },
     });
   } catch (error) {
