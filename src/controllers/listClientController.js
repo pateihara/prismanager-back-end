@@ -13,11 +13,6 @@ function maskLast3DigitsOfCPF(cpf) {
   return cpf;
 }
 
-// Exemplo de uso
-const cpf = "123.456.789-09"; // Substitua pelo CPF real
-const maskedCPF = maskLast3DigitsOfCPF(cpf);
-console.log(maskedCPF); // Deve imprimir "789.09"
-
 const getListClientAll = async (req, res) => {
   try {
     const listClients = await listClientSchema
@@ -48,7 +43,6 @@ const createListClient = async (req, res) => {
       CPF: maskLast3DigitsOfCPF(req.body.CPF), // Aplicar a máscara
       state: req.body.state,
     });
-    console.log("CPF mascarado:", newClient.CPF); // Adicione esta linha para depurar
     const savedClient = await newClient.save();
 
     const newListClient = new listClientSchema({
