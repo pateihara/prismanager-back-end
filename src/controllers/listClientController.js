@@ -30,7 +30,7 @@ const createListClient = async (req, res) => {
     // Criar o nome e ID do cliente
     const newClient = new client({
       name: req.body.clientName,
-      cpf: req.body.cpf,
+      cpf: req.body.clientCpf,
     });
     newClient.save((err) => {
       if (err) {
