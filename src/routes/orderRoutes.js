@@ -4,9 +4,9 @@ const router = express.Router();
 import controller from "../controllers/orderController.js";
 
 // READ - leitura de todos os usuários
-router.get("/:_id", controller.getOrderAll);
-
+router.get("/", controller.getAllOrders);
+router.get("/:id", controller.getOrderById);
 // CREATE - criação de novos usuários
-router.post("/:_id", controller.createOrder);
+router.post("/:id", controller.createOrder);
 
 export default router;
