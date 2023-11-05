@@ -9,7 +9,6 @@ const listClientSchema = new mongoose.Schema({
   state: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Status",
-    default: null,
   },
 });
 
