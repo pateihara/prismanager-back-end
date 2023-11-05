@@ -32,32 +32,44 @@ const createListClient = async (req, res) => {
       name: req.body.clientName,
       cpf: req.body.clientCpf,
     });
+
     newClient.save((err) => {
       if (err) {
         console.error(err);
+        res.status(500).send({
+          message: err.message,
+        });
       } else {
         console.log("Cliente salvo com sucesso");
+
+        const newListClient = new listClientSchema({
+          client: newClient._id, // Associa o ID do cliente ao campo 'client' do listClientSchema
+          state: req.body.state,
+        });
+
+        newListClient.save((err) => {
+          if (err) {
+            console.error(err);
+            res.status(500).send({
+              message: err.message,
+            });
+          } else {
+            console.log("ListClient salvo com sucesso");
+            res.status(201).send({
+              message: "List Client Created",
+              statusCode: 201,
+              data: {
+                client: req.body.clientName,
+                _id: newListClient._id,
+                __v: newListClient.__v,
+              },
+            });
+          }
+        });
       }
     });
-    const savedClient = await newClient.save();
-
-    const newListClient = new listClientSchema({
-      client: savedClient._id, // Associa o ID do cliente ao campo 'client' do listClientSchema
-      state: req.body.state,
-    });
-    const savedListClient = await newListClient.save();
-
-    res.status(201).send({
-      message: "List Client Created",
-      statusCode: 201,
-      data: {
-        client: req.body.clientName,
-        _id: savedListClient._id,
-        __v: savedListClient.__v,
-      },
-    });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).send({
       message: error.message,
     });
