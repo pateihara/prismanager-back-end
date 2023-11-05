@@ -8,7 +8,7 @@ const getClientAll = async (req, res) => {
   try {
     const listClients = await ListClient.find().populate({
       path: "client",
-      select: "name CPF",
+      select: "name cpf",
       populate: {
         path: "contacts",
         select: "email telephone address",
@@ -34,7 +34,7 @@ const createClient = async (req, res) => {
     // Primeiro, crie o cliente como você fez anteriormente
     const newClient = new Client({
       name: req.body.name,
-      CPF: req.body.CPF,
+      cpf: req.body.cpf,
     });
     const savedClient = await newClient.save();
 
@@ -93,7 +93,7 @@ const updateClientById = async (req, res) => {
     // Primeiro, atualize os campos de nome e CPF
     const updateData = {
       name: req.body.name,
-      CPF: req.body.CPF,
+      cpf: req.body.cpf,
     };
 
     // Em seguida, atualize os campos de contato e endereço
